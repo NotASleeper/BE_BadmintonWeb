@@ -1,6 +1,6 @@
 const express = require("express");
 const { categoriesRouter } = require("./categories.routers");
-const { usersRouter } = require("../models/users");
+const { usersRouter } = require("./users.routers");
 
 const rootRouter = express.Router();
 
