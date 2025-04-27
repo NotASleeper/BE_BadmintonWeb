@@ -4,18 +4,18 @@ const createGRN = async (req, res) => {
   try {
     const { date, totalprice, userid } = req.body;
     const newGRN = await GRN.create({ date, totalprice, userid });
-    res.status(201).json(newGRN);
+    res.status(201).send(newGRN);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).send(error);
   }
 };
 
 const getAllGRNs = async (req, res) => {
   try {
     const grns = await GRN.findAll();
-    res.status(200).json(grns);
+    res.status(200).send(grns);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).send(error);
   }
 };
 

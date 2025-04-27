@@ -8,6 +8,7 @@ const { promotionsRouter } = require("./promotions.routers");
 const { cartsRouter } = require("./carts.routers");
 const { grnRouter } = require("./grn.routers");
 const { grndetailsRouter } = require("./grndetails.routers");
+const { orderRouter } = require("./orders.routers");
 
 const rootRouter = express.Router();
 
@@ -20,6 +21,7 @@ rootRouter.use("/promotions", promotionsRouter);
 rootRouter.use("/carts", cartsRouter);
 rootRouter.use("/grns", grnRouter);
 rootRouter.use("/grndetails", grndetailsRouter);
+rootRouter.use("/orders", orderRouter);
 
 module.exports = {
   rootRouter,
