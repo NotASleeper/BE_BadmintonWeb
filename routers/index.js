@@ -6,6 +6,7 @@ const { productRouter } = require("./products.routers");
 const { reviewsRouter } = require("./reviews.routers");
 const { promotionsRouter } = require("./promotions.routers");
 const { cartsRouter } = require("./carts.routers");
+const { grnRouter } = require("./grn.routers");
 
 const rootRouter = express.Router();
 
@@ -16,6 +17,7 @@ rootRouter.use("/products", productRouter);
 rootRouter.use("/reviews", reviewsRouter);
 rootRouter.use("/promotions", promotionsRouter);
 rootRouter.use("/carts", cartsRouter);
+rootRouter.use("/grns", grnRouter);
 
 module.exports = {
   rootRouter,
