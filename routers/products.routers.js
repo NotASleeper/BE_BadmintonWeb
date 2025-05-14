@@ -1,4 +1,5 @@
 const express = require("express");
+const { Products } = require("../models");
 const {
   createProducts,
   getAllProducts,
@@ -6,14 +7,15 @@ const {
   updateProducts,
   deleteProducts,
 } = require("../controllers/products.controllers");
+const { checkExist } = require("../middlewares/validation/checkExist");
 
 const productRouter = express.Router();
 
 productRouter.post("/", createProducts);
 productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getDetailProducts);
-productRouter.put("/:id", updateProducts);
-productRouter.delete("/:id", deleteProducts);
+productRouter.put("/:id", checkExist(Products), updateProducts);
+productRouter.delete("/:id", checkExist(Products), deleteProducts);
 
 module.exports = {
   productRouter,

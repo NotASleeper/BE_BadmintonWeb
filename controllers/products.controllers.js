@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Products } = require("../models");
 
 const createProducts = async (req, res) => {
@@ -19,9 +20,22 @@ const createProducts = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
+  const { name } = req.query;
+  console.log(name);
   try {
-    const productslist = await Products.findAll();
-    res.status(200).send(productslist);
+    if (name) {
+      const productslist = await Products.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${name}%`,
+          },
+        },
+      });
+      res.status(200).send(productslist);
+    } else {
+      const productslist = await Products.findAll();
+      res.status(200).send(productslist);
+    }
   } catch (error) {
     res.status(500).send(error);
   }
