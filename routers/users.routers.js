@@ -5,11 +5,13 @@ const {
   getDetailUsers,
   updateUsers,
   deleteUsers,
+  login,
 } = require("../controllers/users.controllers");
 
 const usersRouter = express.Router();
 
 usersRouter.post("/", createUsers);
+usersRouter.post("/login", login);
 usersRouter.get("/", getAllUsers);
 usersRouter.get("/:id", getDetailUsers);
 usersRouter.put("/:id", updateUsers);

@@ -1,21 +1,26 @@
 const { Users } = require("../models");
+const bcrypt = require("bcryptjs");
 
 const createUsers = async (req, res) => {
+  const {
+    name,
+    username,
+    password,
+    email,
+    gender,
+    address,
+    phonenumber,
+    roleid,
+  } = req.body;
   try {
-    const {
-      name,
-      username,
-      password,
-      email,
-      gender,
-      address,
-      phonenumber,
-      roleid,
-    } = req.body;
+    // Tạo ra một chuỗi ngẫu nhiên
+    const salt = bcrypt.genSaltSync(10);
+    // Mã hóa chuỗi ngẫu nhiên + password
+    const hashedPassword = bcrypt.hashSync(password, salt);
     const newUsers = await Users.create({
       name,
       username,
-      password,
+      password: hashedPassword,
       email,
       gender,
       address,
@@ -25,6 +30,23 @@ const createUsers = async (req, res) => {
     res.status(201).send(newUsers);
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+const login = async (req, res) => {
+  const { username, password } = req.body;
+  const user = await Users.findOne({
+    where: { username },
+  });
+  const isAuth = bcrypt.compareSync(password, user.password);
+  if (isAuth) {
+    res.status(200).send({
+      message: "Login successfully",
+    });
+  } else {
+    res.status(401).send({
+      message: "Login failed",
+    });
   }
 };
 
@@ -98,4 +120,5 @@ module.exports = {
   getDetailUsers,
   updateUsers,
   deleteUsers,
+  login,
 };
