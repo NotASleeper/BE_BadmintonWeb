@@ -1,5 +1,6 @@
 const { Users } = require("../models");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const createUsers = async (req, res) => {
   const {
@@ -40,8 +41,16 @@ const login = async (req, res) => {
   });
   const isAuth = bcrypt.compareSync(password, user.password);
   if (isAuth) {
+    const token = jwt.sign(
+      { username: user.username, roleid: user.roleid },
+      "badmintonweb",
+      {
+        expiresIn: 60 * 60,
+      }
+    );
     res.status(200).send({
       message: "Login successfully",
+      token,
     });
   } else {
     res.status(401).send({
