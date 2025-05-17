@@ -11,6 +11,10 @@ module.exports = {
       },
       userid: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
       rating: {
         type: Sequelize.INTEGER,
@@ -20,12 +24,24 @@ module.exports = {
       },
       productid: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "products",
+          key: "id",
+        },
       },
       orderid: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "orders",
+          key: "id",
+        },
       },
       prereviewid: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "reviews",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,
