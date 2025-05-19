@@ -11,17 +11,17 @@ module.exports = {
       },
       grnid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "grns",
-          key: "id",
-        },
+        // references: {
+        //   model: "grns",
+        //   key: "id",
+        // },
       },
       productid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "products",
-          key: "id",
-        },
+        // references: {
+        //   model: "products",
+        //   key: "id",
+        // },
       },
       price: {
         type: Sequelize.INTEGER,

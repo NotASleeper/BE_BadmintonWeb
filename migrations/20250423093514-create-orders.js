@@ -11,10 +11,10 @@ module.exports = {
       },
       userid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
+        // references: {
+        //   model: "users",
+        //   key: "id",
+        // },
       },
       totalprice: {
         type: Sequelize.INTEGER,
@@ -27,10 +27,10 @@ module.exports = {
       },
       promotionid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "promotions",
-          key: "id",
-        },
+        // references: {
+        //   model: "promotions",
+        //   key: "id",
+        // },
       },
       status: {
         type: Sequelize.INTEGER,

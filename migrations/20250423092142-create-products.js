@@ -14,10 +14,10 @@ module.exports = {
       },
       categoriesid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "categories",
-          key: "id",
-        },
+        // references: {
+        //   model: "categories",
+        //   key: "id",
+        // },
       },
       description: {
         type: Sequelize.TEXT,

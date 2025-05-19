@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Roles } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -72,7 +72,10 @@ const getDetailUsers = async (req, res) => {
   const { id } = req.params;
   try {
     const detailUsers = await Users.findOne({
-      where: { id },
+      where: { id: id },
+      include: {
+        model: Roles,
+      },
     });
     res.status(200).send(detailUsers);
   } catch (error) {

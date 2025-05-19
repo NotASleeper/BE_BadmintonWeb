@@ -11,10 +11,10 @@ module.exports = {
       },
       productid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "products",
-          key: "id",
-        },
+        // references: {
+        //   model: "products",
+        //   key: "id",
+        // },
       },
       url: {
         type: Sequelize.STRING,

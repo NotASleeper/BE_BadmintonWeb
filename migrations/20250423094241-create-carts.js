@@ -11,17 +11,17 @@ module.exports = {
       },
       userid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
+        // references: {
+        //   model: "users",
+        //   key: "id",
+        // },
       },
       productid: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "products",
-          key: "id",
-        },
+        // references: {
+        //   model: "products",
+        //   key: "id",
+        // },
       },
       quantity: {
         type: Sequelize.INTEGER,
