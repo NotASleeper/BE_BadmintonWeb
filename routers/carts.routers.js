@@ -5,15 +5,18 @@ const {
   getDetailCarts,
   updateCarts,
   deleteCarts,
+  getAllCartsbyUserId,
+  CheckoutCarts,
 } = require("../controllers/carts.controllers");
 
 const cartsRouter = express.Router();
 
 cartsRouter.post("/", createCarts);
-cartsRouter.get("/", getAllCarts);
-cartsRouter.get("/:id", getDetailCarts);
+cartsRouter.get("/:userid", getAllCartsbyUserId);
+// cartsRouter.get("/:id", getDetailCarts);
 cartsRouter.put("/:id", updateCarts);
 cartsRouter.delete("/:id", deleteCarts);
+cartsRouter.post("/checkout", CheckoutCarts);
 
 module.exports = {
   cartsRouter,
