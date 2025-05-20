@@ -141,6 +141,28 @@ const deleteUsers = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { oldpass, newpass, passagain } = req.body;
+  const userid = req.user.userid;
+  const user = await Users.findOne({
+    where: { id: userid },
+  });
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+  const isMatch = bcrypt.compareSync(oldpass, user.password);
+  if (!isMatch) {
+    return res.status(401).send("Old password is incorrect");
+  }
+  if (newpass !== passagain) {
+    return res.status(400).send("New password and confirmation do not match");
+  }
+  const salt = bcrypt.genSaltSync(10);
+  user.password = bcrypt.hashSync(newpass, salt);
+  await user.save();
+  res.status(200).send("Password changed successfully");
+};
+
 module.exports = {
   createUsers,
   getAllUsers,
@@ -149,4 +171,5 @@ module.exports = {
   deleteUsers,
   login,
   getDetailUsersByUsername,
+  changePassword,
 };

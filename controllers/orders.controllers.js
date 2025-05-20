@@ -1,4 +1,4 @@
-const { Orders } = require("../models");
+const { Orders, Users, Promotions } = require("../models");
 
 const createOrder = async (req, res) => {
   try {
@@ -20,7 +20,18 @@ const createOrder = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Orders.findAll();
+    const orders = await Orders.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: ["name", "phonenumber"],
+        },
+        {
+          model: Promotions,
+          attributes: ["code"],
+        },
+      ],
+    });
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
