@@ -14,6 +14,10 @@ app.use(express.static(publicPathDirectory));
 // cài đặt router
 app.use("/api/v1", rootRouter);
 
+// cài đặt cors
+const cors = require("cors");
+app.use(cors());
+
 // lắng nghe sự kiện kết nối
 app.listen(3000, async () => {
   console.log("App listening on http://localhost:3000");
