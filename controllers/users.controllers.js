@@ -42,7 +42,7 @@ const login = async (req, res) => {
   const isAuth = bcrypt.compareSync(password, user.password);
   if (isAuth) {
     const token = jwt.sign(
-      { username: user.username, roleid: user.roleid },
+      { username: user.username, roleid: user.roleid, userid: user.id },
       "badmintonweb",
       {
         expiresIn: 60 * 60,
@@ -73,6 +73,21 @@ const getDetailUsers = async (req, res) => {
   try {
     const detailUsers = await Users.findOne({
       where: { id: id },
+      include: {
+        model: Roles,
+      },
+    });
+    res.status(200).send(detailUsers);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const getDetailUsersByUsername = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const detailUsers = await Users.findOne({
+      where: { username: username },
       include: {
         model: Roles,
       },
@@ -133,4 +148,5 @@ module.exports = {
   updateUsers,
   deleteUsers,
   login,
+  getDetailUsersByUsername,
 };

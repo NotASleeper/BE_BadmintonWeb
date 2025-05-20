@@ -6,6 +6,7 @@ const {
   updateUsers,
   deleteUsers,
   login,
+  getDetailUsersByUsername,
 } = require("../controllers/users.controllers");
 
 const usersRouter = express.Router();
@@ -16,6 +17,7 @@ usersRouter.get("/", getAllUsers);
 usersRouter.get("/:id", getDetailUsers);
 usersRouter.put("/:id", updateUsers);
 usersRouter.delete("/:id", deleteUsers);
+usersRouter.get("/username/:username", getDetailUsersByUsername);
 
 module.exports = {
   usersRouter,
