@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Products } = require("../models");
+const { Products, Imagesproduct, Categories } = require("../models");
 
 const createProducts = async (req, res) => {
   try {
@@ -30,6 +30,14 @@ const getAllProducts = async (req, res) => {
             [Op.like]: `%${name}%`,
           },
         },
+        include: {
+          model: Categories,
+          attributes: ["name"],
+        },
+        include: {
+          model: Imagesproduct,
+          attributes: ["url"],
+        },
       });
       res.status(200).send(productslist);
     } else {
@@ -46,6 +54,16 @@ const getDetailProducts = async (req, res) => {
   try {
     const detailProducts = await Products.findOne({
       where: { id },
+      include: [
+        {
+          model: Categories,
+          attributes: ["name"],
+        },
+        {
+          model: Imagesproduct,
+          attributes: ["url"],
+        },
+      ],
     });
     res.status(200).send(detailProducts);
   } catch (error) {
@@ -78,6 +96,9 @@ const deleteProducts = async (req, res) => {
   try {
     await Products.destroy({
       where: { id },
+    });
+    await Imagesproduct.destroy({
+      where: { productid: id },
     });
     res.status(200).send("Deleted successfully");
   } catch (error) {

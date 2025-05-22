@@ -3,6 +3,8 @@ const path = require("path");
 const { sequelize } = require("./models");
 const { rootRouter } = require("./routers");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
 // cài ứng dụng sử dụng kiểu json
 app.use(express.json());
@@ -13,10 +15,6 @@ app.use(express.static(publicPathDirectory));
 
 // cài đặt router
 app.use("/api/v1", rootRouter);
-
-// cài đặt cors
-const cors = require("cors");
-app.use(cors());
 
 // lắng nghe sự kiện kết nối
 app.listen(3000, async () => {
