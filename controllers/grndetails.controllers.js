@@ -1,4 +1,4 @@
-const { GRNdetails } = require("../models");
+const { GRNdetails, Products, GRN } = require("../models");
 
 const createGRNDetails = async (req, res) => {
   try {
@@ -9,6 +9,20 @@ const createGRNDetails = async (req, res) => {
       price,
       quantity,
     });
+
+    // Cập nhật quantity cho Product
+    const product = await Products.findOne({ where: { id: productid } });
+    if (product) {
+      product.quantity += quantity;
+      await product.save();
+    }
+
+    // Cập nhật totalprice cho GRN
+    const grn = await GRN.findByPk(grnid);
+    if (grn) {
+      grn.totalprice += price * quantity;
+      await grn.save();
+    }
     res.status(201).json(newGRNDetails);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -65,12 +79,34 @@ const updateGRNDetails = async (req, res) => {
 const deleteGRNDetails = async (req, res) => {
   const { id, grnid } = req.params;
   try {
-    const detailGRNDetails = await GRNdetails.destroy({
+    // Lấy chi tiết GRNDetails trước khi xóa
+    const detailGRNDetails = await GRNdetails.findOne({
       where: {
         id: id,
         grnid: grnid,
       },
     });
+
+    if (!detailGRNDetails) {
+      return res.status(404).send("Not found");
+    }
+
+    // Cập nhật quantity cho Product
+    const product = await Products.findByPk(detailGRNDetails.productid);
+    if (product) {
+      product.quantity -= detailGRNDetails.quantity;
+      await product.save();
+    }
+
+    // Cập nhật totalprice cho GRN
+    const grn = await GRN.findByPk(grnid);
+    if (grn) {
+      grn.totalprice -= detailGRNDetails.price * detailGRNDetails.quantity;
+      await grn.save();
+    }
+
+    await detailGRNDetails.destroy();
+
     res.status(200).send("Deleted successfully");
   } catch (error) {
     res.status(500).send(error);
