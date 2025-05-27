@@ -11,6 +11,7 @@ const { grndetailsRouter } = require("./grndetails.routers");
 const { orderRouter } = require("./orders.routers");
 const { orderdetailRouter } = require("./orderdetails.routers");
 const { imgproductRouter } = require("./imagesproduct.routers");
+const { imguserRouter } = require("./imagesuser.routers");
 
 const rootRouter = express.Router();
 
@@ -26,6 +27,7 @@ rootRouter.use("/grndetails", grndetailsRouter);
 rootRouter.use("/orders", orderRouter);
 rootRouter.use("/orderdetails", orderdetailRouter);
 rootRouter.use("/imgproduct", imgproductRouter);
+rootRouter.use("/imguser", imguserRouter);
 
 module.exports = {
   rootRouter,

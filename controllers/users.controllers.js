@@ -1,4 +1,4 @@
-const { Users, Roles } = require("../models");
+const { Users, Roles, Imagesuser } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -61,7 +61,18 @@ const login = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const userslist = await Users.findAll();
+    const userslist = await Users.findAll({
+      include: [
+        {
+          model: Roles,
+          attributes: ["name", "description"],
+        },
+        {
+          model: Imagesuser,
+          attributes: ["url"],
+        },
+      ],
+    });
     res.status(200).send(userslist);
   } catch (error) {
     res.status(500).send(error);
@@ -73,9 +84,16 @@ const getDetailUsers = async (req, res) => {
   try {
     const detailUsers = await Users.findOne({
       where: { id: id },
-      include: {
-        model: Roles,
-      },
+      include: [
+        {
+          model: Roles,
+          attributes: ["name", "description"],
+        },
+        {
+          model: Imagesuser,
+          attributes: ["url"],
+        },
+      ],
     });
     res.status(200).send(detailUsers);
   } catch (error) {
@@ -88,9 +106,16 @@ const getDetailUsersByUsername = async (req, res) => {
   try {
     const detailUsers = await Users.findOne({
       where: { username: username },
-      include: {
-        model: Roles,
-      },
+      include: [
+        {
+          model: Roles,
+          attributes: ["name", "description"],
+        },
+        {
+          model: Imagesuser,
+          attributes: ["url"],
+        },
+      ],
     });
     res.status(200).send(detailUsers);
   } catch (error) {
