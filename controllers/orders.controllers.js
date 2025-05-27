@@ -50,6 +50,28 @@ const getOrderById = async (req, res) => {
   }
 };
 
+const getOrderByUserId = async (req, res) => {
+  const { userid } = req.params;
+  try {
+    const orders = await Orders.findAll({
+      where: { userid },
+      include: [
+        {
+          model: Users,
+          attributes: ["name", "phonenumber"],
+        },
+        {
+          model: Promotions,
+          attributes: ["code"],
+        },
+      ],
+    });
+    res.status(200).send(orders);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
 const updateOrder = async (req, res) => {
   const { id } = req.params;
   const { userid, totalprice, phonenumber, address, promotionid, status } =
@@ -90,4 +112,5 @@ module.exports = {
   getOrderById,
   updateOrder,
   deleteOrder,
+  getOrderByUserId,
 };

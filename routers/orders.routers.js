@@ -5,6 +5,7 @@ const {
   getOrderById,
   updateOrder,
   deleteOrder,
+  getOrderByUserId,
 } = require("../controllers/orders.controllers");
 
 const orderRouter = express.Router();
@@ -14,6 +15,7 @@ orderRouter.get("/", getAllOrders);
 orderRouter.get("/:id", getOrderById);
 orderRouter.put("/:id", updateOrder);
 orderRouter.delete("/:id", deleteOrder);
+orderRouter.get("/user/:userid", getOrderByUserId);
 
 module.exports = {
   orderRouter,
