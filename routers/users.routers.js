@@ -8,6 +8,7 @@ const {
   login,
   getDetailUsersByUsername,
   changePassword,
+  forgotPassword,
 } = require("../controllers/users.controllers");
 const { authenticate } = require("../middlewares/auth/authenticate");
 
@@ -21,6 +22,7 @@ usersRouter.put("/:id", updateUsers);
 usersRouter.delete("/:id", deleteUsers);
 usersRouter.get("/username/:username", getDetailUsersByUsername);
 usersRouter.post("/changepass", authenticate, changePassword);
+usersRouter.post("/forgotpass", forgotPassword);
 
 module.exports = {
   usersRouter,

@@ -1,6 +1,7 @@
 const { Users, Roles, Imagesuser } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../services/emailservice");
 
 const createUsers = async (req, res) => {
   const {
@@ -188,6 +189,34 @@ const changePassword = async (req, res) => {
   res.status(200).send("Password changed successfully");
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await Users.findOne({
+    where: { email },
+  });
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+
+  // 2. Tạo mật khẩu mới ngẫu nhiên gồm số
+  const newPassword = Math.floor(100000 + Math.random() * 900000).toString(); // 6 chữ số
+
+  // 3. Băm mật khẩu
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // 4. Cập nhật vào database
+  user.password = hashedPassword;
+  await user.save();
+  // 5. Gửi email với mật khẩu mới
+  const sendmail = sendEmail(
+    email,
+    "Password Reset",
+    `Your new password is: ${newPassword}`,
+    `<p>Your new password is: <strong>${newPassword}</strong></p>`
+  );
+  res.status(200).send("Password reset link sent to your email");
+};
+
 module.exports = {
   createUsers,
   getAllUsers,
@@ -197,4 +226,5 @@ module.exports = {
   login,
   getDetailUsersByUsername,
   changePassword,
+  forgotPassword,
 };
