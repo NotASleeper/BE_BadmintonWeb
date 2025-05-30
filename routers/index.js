@@ -12,6 +12,7 @@ const { orderRouter } = require("./orders.routers");
 const { orderdetailRouter } = require("./orderdetails.routers");
 const { imgproductRouter } = require("./imagesproduct.routers");
 const { imguserRouter } = require("./imagesuser.routers");
+const paymentRouter = require("./payment.routers");
 
 const rootRouter = express.Router();
 
@@ -28,6 +29,7 @@ rootRouter.use("/orders", orderRouter);
 rootRouter.use("/orderdetails", orderdetailRouter);
 rootRouter.use("/imgproduct", imgproductRouter);
 rootRouter.use("/imguser", imguserRouter);
+rootRouter.use("/payment", paymentRouter);
 
 module.exports = {
   rootRouter,

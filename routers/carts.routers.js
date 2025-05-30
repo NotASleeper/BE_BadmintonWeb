@@ -18,8 +18,6 @@ cartsRouter.get("/:userid", getAllCartsbyUserId);
 cartsRouter.put("/:id", updateCarts);
 cartsRouter.delete("/:id", deleteCarts);
 cartsRouter.post("/checkout", CheckoutCarts);
-cartsRouter.post("/create-qr", paymentVNPAY);
-cartsRouter.get("/vnpay/check-payment-vnpay", checkPaymentVNPAY);
 
 module.exports = {
   cartsRouter,
