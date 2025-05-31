@@ -1,9 +1,32 @@
-const { Reviews } = require("../models");
+const { Reviews, Users, Orders, Ordersdetail } = require("../models");
 
 const createReviews = async (req, res) => {
   try {
     const { userid, rating, content, productid, orderid, prereviewid } =
       req.body;
+
+    const user = await Users.findOne({
+      where: { id: userid },
+    });
+    if (!user || user.roleid !== 1) {
+      return res
+        .status(403)
+        .send({ message: "Bạn không có quyền đánh giá sản phẩm này!" });
+    }
+    const orderDetail = await Ordersdetail.findOne({
+      where: { productid },
+      include: [
+        {
+          model: Orders,
+          where: { userid },
+        },
+      ],
+    });
+    if (!orderDetail) {
+      return res
+        .status(400)
+        .send({ message: "Bạn chưa mua sản phẩm này nên không thể đánh giá!" });
+    }
     const newReview = await Reviews.create({
       userid,
       rating,
@@ -18,9 +41,12 @@ const createReviews = async (req, res) => {
   }
 };
 
-const getAllReviews = async (req, res) => {
+const getAllReviewsbyProductid = async (req, res) => {
   try {
-    const reviewsList = await Reviews.findAll();
+    const { productid } = req.params;
+    const reviewsList = await Reviews.findAll({
+      where: { productid },
+    });
     res.status(200).send(reviewsList);
   } catch (error) {
     res.status(500).send(error);
@@ -74,7 +100,7 @@ const deleteReviews = async (req, res) => {
 
 module.exports = {
   createReviews,
-  getAllReviews,
+  getAllReviewsbyProductid,
   getDetailReviews,
   updateReviews,
   deleteReviews,

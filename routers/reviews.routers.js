@@ -4,14 +4,14 @@ const {
   deleteReviews,
   updateReviews,
   getDetailReviews,
-  getAllReviews,
+  getAllReviewsbyProductid,
 } = require("../controllers/reviews.controllers");
 
 const reviewsRouter = express.Router();
 
 reviewsRouter.post("/", createReviews);
-reviewsRouter.get("/", getAllReviews);
-reviewsRouter.get("/:id", getDetailReviews);
+reviewsRouter.get("/:productid", getAllReviewsbyProductid);
+// reviewsRouter.get("/:id", getDetailReviews);
 reviewsRouter.put("/:id", updateReviews);
 reviewsRouter.delete("/:id", deleteReviews);
 
