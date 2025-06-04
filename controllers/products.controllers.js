@@ -78,7 +78,7 @@ const getDetailProducts = async (req, res) => {
         },
         {
           model: Imagesproduct,
-          attributes: ["url"],
+          attributes: ["id", "url"],
         },
       ],
     });
