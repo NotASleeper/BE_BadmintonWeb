@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       promotionid: DataTypes.INTEGER,
       status: DataTypes.INTEGER,
+      process: DataTypes.DATE,
+      shipping: DataTypes.DATE,
+      delivered: DataTypes.DATE,
     },
     {
       sequelize,

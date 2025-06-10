@@ -35,6 +35,15 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER,
       },
+      process: {
+        type: Sequelize.DATE,
+      },
+      shipping: {
+        type: Sequelize.DATE,
+      },
+      delivered: {
+        type: Sequelize.DATE,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
