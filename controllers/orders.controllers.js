@@ -1,4 +1,4 @@
-const { Orders, Users, Promotions } = require("../models");
+const { Orders, Users, Promotions, Payment } = require("../models");
 
 const createOrder = async (req, res) => {
   try {
@@ -30,6 +30,9 @@ const getAllOrders = async (req, res) => {
           model: Promotions,
           attributes: ["code"],
         },
+        {
+          model: Payment,
+        },
       ],
     });
     res.status(200).json(orders);
@@ -43,6 +46,19 @@ const getOrderById = async (req, res) => {
   try {
     const detailOrder = await Orders.findOne({
       where: { id },
+      include: [
+        {
+          model: Users,
+          attributes: ["name", "phonenumber"],
+        },
+        {
+          model: Promotions,
+          attributes: ["code"],
+        },
+        {
+          model: Payment,
+        },
+      ],
     });
     res.status(200).send(detailOrder);
   } catch (error) {
@@ -64,6 +80,9 @@ const getOrderByUserId = async (req, res) => {
           model: Promotions,
           attributes: ["code"],
         },
+        {
+          model: Payment,
+        },
       ],
     });
     res.status(200).send(orders);
@@ -74,8 +93,17 @@ const getOrderByUserId = async (req, res) => {
 
 const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const { userid, totalprice, phonenumber, address, promotionid, status } =
-    req.body;
+  const {
+    userid,
+    totalprice,
+    phonenumber,
+    address,
+    promotionid,
+    status,
+    process,
+    shipping,
+    delivered,
+  } = req.body;
   try {
     const detailOrder = await Orders.findOne({
       where: { id },
@@ -86,6 +114,9 @@ const updateOrder = async (req, res) => {
     detailOrder.address = address;
     detailOrder.promotionid = promotionid;
     detailOrder.status = status;
+    detailOrder.process = process;
+    detailOrder.shipping = shipping;
+    detailOrder.delivered = delivered;
     await detailOrder.save();
     res.status(200).send(detailOrder);
   } catch (error) {

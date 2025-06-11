@@ -34,6 +34,12 @@ const getlistGRNDetails = async (req, res) => {
   try {
     const grnDetails = await GRNdetails.findAll({
       where: { grnid: grnid },
+      include: [
+        {
+          model: Products,
+          attributes: ["id", "name", "price", "description", "brand"],
+        },
+      ],
     });
     res.status(200).send(grnDetails);
   } catch (error) {
@@ -49,6 +55,12 @@ const getGRNDetailsById = async (req, res) => {
         id: id,
         grnid: grnid,
       },
+      include: [
+        {
+          model: Products,
+          attributes: ["id", "name", "price", "description", "brand"],
+        },
+      ],
     });
     res.status(200).send(detailGRNDetails);
   } catch (error) {

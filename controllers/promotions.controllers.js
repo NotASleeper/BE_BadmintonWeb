@@ -39,6 +39,21 @@ const getDetailPromotions = async (req, res) => {
   }
 };
 
+const getDetailPromotionsByCode = async (req, res) => {
+  const { code } = req.params;
+  try {
+    const detailPromotion = await Promotions.findOne({
+      where: { code },
+    });
+    if (!detailPromotion) {
+      return res.status(404).send("Promotion not found");
+    }
+    res.status(200).send(detailPromotion);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const updatePromotions = async (req, res) => {
   const { id } = req.params;
   const { code, description, quantity, value, start, end, status } = req.body;
@@ -79,4 +94,5 @@ module.exports = {
   getDetailPromotions,
   updatePromotions,
   deletePromotions,
+  getDetailPromotionsByCode,
 };

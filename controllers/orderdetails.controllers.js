@@ -1,4 +1,4 @@
-const { Ordersdetail } = require("../models");
+const { Ordersdetail, Products } = require("../models");
 
 const createOrderDetail = async (req, res) => {
   try {
@@ -19,6 +19,12 @@ const getAllOrderDetails = async (req, res) => {
   try {
     const orderDetails = await Ordersdetail.findAll({
       where: { orderid: orderid },
+      include: [
+        {
+          model: Products,
+          attributes: ["id", "name", "price", "description", "brand"],
+        },
+      ],
     });
     res.status(200).send(orderDetails);
   } catch (error) {
@@ -34,6 +40,12 @@ const getOrderDetailById = async (req, res) => {
         id: id,
         orderid: orderid,
       },
+      include: [
+        {
+          model: Products,
+          attributes: ["id", "name", "price", "description", "brand"],
+        },
+      ],
     });
     res.status(200).send(orderDetail);
   } catch (error) {

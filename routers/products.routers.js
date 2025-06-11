@@ -6,6 +6,7 @@ const {
   getDetailProducts,
   updateProducts,
   deleteProducts,
+  getTop5ProductsByMonth,
 } = require("../controllers/products.controllers");
 const { checkExist } = require("../middlewares/validation/checkExist");
 const { authenticate } = require("../middlewares/auth/authenticate");
@@ -18,6 +19,7 @@ productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getDetailProducts);
 productRouter.put("/:id", checkExist(Products), updateProducts);
 productRouter.delete("/:id", checkExist(Products), deleteProducts);
+productRouter.get("/top5product", getTop5ProductsByMonth);
 
 module.exports = {
   productRouter,
