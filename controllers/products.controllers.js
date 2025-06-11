@@ -130,7 +130,10 @@ const getTop5ProductsByMonth = async (req, res) => {
     const endDate = new Date(year, month, 1);
 
     const topProducts = await Ordersdetail.findAll({
-      attributes: ["productid", [fn("SUM", col("quantity")), "totalSold"]],
+      attributes: [
+        "productid",
+        [fn("SUM", col("Ordersdetail.quantity")), "totalSold"],
+      ],
       include: [
         {
           model: Orders,
@@ -140,7 +143,7 @@ const getTop5ProductsByMonth = async (req, res) => {
               [Op.gte]: startDate,
               [Op.lt]: endDate,
             },
-            status: 2, // chỉ tính đơn đã hoàn thành (nếu có trường status)
+            status: 1, // chỉ tính đơn đã hoàn thành (nếu có trường status)
           },
         },
         {

@@ -19,7 +19,7 @@ productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getDetailProducts);
 productRouter.put("/:id", checkExist(Products), updateProducts);
 productRouter.delete("/:id", checkExist(Products), deleteProducts);
-productRouter.get("/top5product", getTop5ProductsByMonth);
+productRouter.get("/best-sale/top5", getTop5ProductsByMonth);
 
 module.exports = {
   productRouter,
