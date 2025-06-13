@@ -1,4 +1,5 @@
 const { Orders, Users, Promotions, Payment } = require("../models");
+const { Op } = require("sequelize");
 
 const createOrder = async (req, res) => {
   try {
@@ -137,6 +138,24 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+const getTotalOrderAmount = async (req, res) => {
+  const { from, to } = req.query; // from và to dạng yyyy-mm-dd
+  try {
+    const total = await Orders.sum("totalprice", {
+      where: {
+        createdAt: {
+          [Op.gte]: new Date(from),
+          [Op.lte]: new Date(to),
+        },
+        status: 1, // chỉ tính đơn đã hoàn thành, sửa lại nếu cần
+      },
+    });
+    res.status(200).json({ totalOrderAmount: total || 0 });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getAllOrders,
@@ -144,4 +163,5 @@ module.exports = {
   updateOrder,
   deleteOrder,
   getOrderByUserId,
+  getTotalOrderAmount,
 };

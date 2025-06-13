@@ -1,4 +1,5 @@
 const { GRN } = require("../models");
+const { Op } = require("sequelize");
 
 const createGRN = async (req, res) => {
   try {
@@ -61,10 +62,28 @@ const deleteGRN = async (req, res) => {
   }
 };
 
+const getTotalGRNAmount = async (req, res) => {
+  const { from, to } = req.query; // from và to dạng yyyy-mm-dd
+  try {
+    const total = await GRN.sum("totalprice", {
+      where: {
+        createdAt: {
+          [Op.gte]: new Date(from),
+          [Op.lte]: new Date(to),
+        },
+      },
+    });
+    res.status(200).json({ totalGRNAmount: total || 0 });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createGRN,
   getAllGRNs,
   getGRNById,
   updateGRN,
   deleteGRN,
+  getTotalGRNAmount,
 };
