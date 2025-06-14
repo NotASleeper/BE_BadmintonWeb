@@ -119,19 +119,29 @@ const handlechat = async (req, res) => {
         return res.json({ type: "products", data: products }); // Gửi về cho FE để render product cards
       }
 
-      if (products.length === 0) {
-        return res.json({
-          type: "text",
-          data: `Không tìm thấy sản phẩm nào với yêu cầu của bạn`,
-        });
-      }
+      // if (products.length === 0) {
+      //   return res.json({
+      //     type: "text",
+      //     data: `Không tìm thấy sản phẩm nào với yêu cầu của bạn`,
+      //   });
+      // }
     }
 
     // Nếu không tìm được sản phẩm → gọi Gemini
     const geminiResponse = await axios.post(
       `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${process.env.CHATBOT_API_KEY}`,
       {
-        contents: [{ parts: [{ text: message }] }],
+        contents: [
+          {
+            parts: [
+              {
+                text:
+                  message +
+                  ". Độ dài câu trả lời vừa phải với chatbot người dùng",
+              },
+            ],
+          },
+        ],
       },
       { headers: { "Content-Type": "application/json" } }
     );
