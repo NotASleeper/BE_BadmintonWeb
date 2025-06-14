@@ -131,7 +131,7 @@ const CheckoutCarts = async (req, res) => {
         totalprice: totalAmount,
         phonenumber,
         address,
-        status: 1,
+        status: 0,
       });
     } else {
       newOrder = await Orders.create({
@@ -140,8 +140,8 @@ const CheckoutCarts = async (req, res) => {
         phonenumber,
         address,
         promotionid: promotion.id,
-        status: 1,
-        // 1: Đang chờ xử lý, 2: Đang giao hàng, 3: Đã giao hàng
+        status: 0,
+        // 0: Chưa thanh toán, 1: Đã thanh toán
       });
     }
 

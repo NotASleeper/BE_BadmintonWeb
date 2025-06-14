@@ -1,4 +1,4 @@
-const { Products } = require("../models");
+const { Products, Orders } = require("../models");
 const { Op } = require("sequelize");
 const axios = require("axios");
 require("dotenv").config();
@@ -68,7 +68,47 @@ const extractSearchTerm = (message) => {
 };
 
 const handlechat = async (req, res) => {
-  const { message } = req.body; // nhận input từ FE
+  const { message, userid } = req.body; // nhận input từ FE
+
+  // Các từ khóa kiểm tra đơn hàng
+  const orderKeywords = [
+    "kiểm tra đơn hàng",
+    "đơn hàng của tôi",
+    "tình trạng đơn hàng",
+  ];
+
+  // Kiểm tra message có chứa từ khóa không (không phân biệt hoa thường)
+  if (
+    orderKeywords.some((keyword) => message.toLowerCase().includes(keyword))
+  ) {
+    // Tìm đơn hàng gần nhất của user
+    const order = await Orders.findOne({
+      where: { userid },
+      order: [["createdAt", "DESC"]],
+    });
+
+    if (!order) {
+      return res.json({ message: "Bạn chưa có đơn hàng nào." });
+    }
+
+    // Ưu tiên ngày: deliveredAt > shippedAt > approvedAt
+    let date = order.deliveredAt || order.shippedAt || order.approvedAt;
+    let statusMsg = "Đơn hàng của bạn đã được ";
+
+    if (order.deliveredAt) statusMsg += "giao hàng";
+    else if (order.shippedAt) statusMsg += "vận chuyển";
+    else if (order.approvedAt) statusMsg += "phê duyệt";
+    else statusMsg += "tạo thành công";
+
+    if (date) {
+      statusMsg += ` vào ngày ${new Date(date).toLocaleDateString("vi-VN")}`;
+    }
+
+    return res.json({
+      message: statusMsg,
+      order: order, // trả về thông tin đơn hàng nếu muốn
+    });
+  }
 
   try {
     if (isProductSearch(message)) {

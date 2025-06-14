@@ -79,7 +79,7 @@ const checkPaymentVNPAY = async (req, res) => {
       });
 
       return res.redirect(
-        `http://localhost:3000/payment-success?orderId=${orderid}`
+        `http://localhost:3030/paymentsuccess?orderId=${orderid}`
       );
     } else {
       await Payment.create({
@@ -90,7 +90,7 @@ const checkPaymentVNPAY = async (req, res) => {
       });
 
       return res.redirect(
-        `http://localhost:3000/payment-fail?orderId=${orderid}`
+        `http://localhost:3030/paymentfailed?orderId=${orderid}`
       );
     }
   } catch (err) {
