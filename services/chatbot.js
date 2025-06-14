@@ -106,7 +106,8 @@ const handlechat = async (req, res) => {
 
     return res.json({
       message: statusMsg,
-      order: order, // trả về thông tin đơn hàng nếu muốn
+      type: "orders",
+      data: order, // trả về thông tin đơn hàng nếu muốn
     });
   }
 
