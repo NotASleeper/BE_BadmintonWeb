@@ -10,6 +10,15 @@ const {
 const createCarts = async (req, res) => {
   try {
     const { userid, productid, quantity, notes } = req.body;
+    const existingCart = await Carts.findOne({
+      where: { userid, productid },
+    });
+    if (existingCart) {
+      existingCart.quantity += quantity;
+      existingCart.notes = notes;
+      await existingCart.save();
+      return res.status(200).send(existingCart);
+    }
     const newCart = await Carts.create({
       userid,
       productid,

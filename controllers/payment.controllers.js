@@ -1,4 +1,5 @@
 const { Payment, Orders } = require("../models");
+const { PaymentPaypal, capturePayment } = require("../services/paypal");
 const { paymentVNPAY } = require("../services/vnpay");
 const crypto = require("crypto");
 require("dotenv").config();
@@ -6,13 +7,21 @@ require("dotenv").config();
 const createPayment = async (req, res) => {
   try {
     const { orderid, paymentmethod } = req.body;
-    if (paymentmethod !== "vnpay") {
+    if (paymentmethod === "cash") {
       const newPayment = await Payment.create({
         orderid,
         paymentmethod,
         status: 0, // Assuming 0 means pending
       });
       res.status(201).send(newPayment);
+    } else if (paymentmethod === "paypal") {
+      const payingorder = await Orders.findOne({
+        where: { id: orderid },
+      });
+      if (!payingorder) {
+        return res.status(404).send({ message: "Order not found" });
+      }
+      await PaymentPaypal(payingorder.id, payingorder.totalprice, res);
     } else {
       const payingorder = await Orders.findOne({
         where: { id: orderid },
@@ -82,13 +91,6 @@ const checkPaymentVNPAY = async (req, res) => {
         `http://localhost:3030/paymentsuccess?orderId=${orderid}`
       );
     } else {
-      await Payment.create({
-        transactionid: transactionid,
-        orderid: orderid,
-        paymentmethod: "VNPAY",
-        status: 0, // 0 = FAILED
-      });
-
       return res.redirect(
         `http://localhost:3030/paymentfailed?orderId=${orderid}`
       );
@@ -101,7 +103,34 @@ const checkPaymentVNPAY = async (req, res) => {
   }
 };
 
+const checkPaymentPaypal = async (req, res) => {
+  try {
+    const data = await capturePayment(req.query.token);
+    const orderid = req.query.orderid;
+    if (data.status === "COMPLETED") {
+      await Payment.create({
+        transactionid: data.id,
+        orderid: orderid,
+        paymentmethod: "Paypal",
+        status: 1, // 1 = PAID
+      });
+
+      return res.redirect(
+        `http://localhost:3030/paymentsuccess?orderId=${orderid}`
+      );
+    } else {
+      return res.redirect(
+        `http://localhost:3030/paymentfailed?orderId=${orderid}`
+      );
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error processing PayPal payment" });
+  }
+};
+
 module.exports = {
   createPayment,
   checkPaymentVNPAY,
+  checkPaymentPaypal,
 };

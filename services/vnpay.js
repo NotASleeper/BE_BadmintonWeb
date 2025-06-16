@@ -13,8 +13,12 @@ const paymentVNPAY = async (orderid, totalprice, res) => {
     secureSecret: process.env.VNPAY_SECRET, // Your secure secret
     vnpayHost: "https://sandbox.vnpayment.vn", // VNPAY host URL
     testMode: true, // Set to false for production
+    hashAlgorithm: "SHA512", // Hash algorithm to use
     loggerFn: ignoreLogger, // Use ignoreLogger to disable logging
   });
+
+  console.log("VNPay Tmncode .env:", process.env.VNPAY_TMN_CODE);
+  console.log("VNPay Secure Secret .env:", process.env.VNPAY_SECRET);
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1); // Set to tomorrow's date
@@ -22,8 +26,8 @@ const paymentVNPAY = async (orderid, totalprice, res) => {
   const vnpayResponse = await vnpay.buildPaymentUrl({
     vnp_Amount: totalprice, // Amount in VND
     vnp_IpAddr: "127.0.0.1",
-    vnp_TxnRef: orderid,
-    vnp_OrderInfo: `${orderid}`,
+    vnp_TxnRef: orderid, // Unique transaction reference
+    vnp_OrderInfo: `Payment for order ${orderid}`, // Description of the transaction
     vnp_OrderType: ProductCode.Other,
     vnp_ReturnUrl: `http://localhost:3000/api/v1/payment/check-payment-vnpay`,
     vnp_Locale: VnpLocale.VN, // 'vn' hoặc 'en'

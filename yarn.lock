@@ -115,7 +115,7 @@ __metadata:
     nodemon: "npm:^3.1.9"
     sequelize: "npm:^6.37.7"
     sequelize-cli: "npm:^6.6.2"
-    vnpay: "npm:^2.2.0"
+    vnpay: "npm:^2.3.0"
   languageName: unknown
   linkType: soft
 
@@ -2719,12 +2719,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vnpay@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "vnpay@npm:2.2.0"
+"vnpay@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "vnpay@npm:2.3.0"
   dependencies:
     dayjs: "npm:^1.11.13"
-  checksum: 10c0/5e3530bc8a40878f20c6078e1302ffbde67bf2288dc39e8147cb8e559b59eeaca0f1a7b2d346b3e6904d51fc263f896f108cf21ac895a651f7d9cedce054cf21
+  checksum: 10c0/722f8195900ebad5e65fc286f711dd88e723a89f7846ed3f3d95d7cd79c51848b49ab0aaf9deb90cbe29eb3003d45716e2f75348c667f0bb0c22365b26c16421
   languageName: node
   linkType: hard
 
